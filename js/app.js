@@ -12,6 +12,10 @@ const App = {
 
   init() {
     Store.load();
+    // アプリとしてインストールできるようにする(http(s)で開いているときだけ)
+    if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    }
     window.addEventListener('hashchange', () => this.render(true));
     document.getElementById('importInput').addEventListener('change', e => this.handleImport(e));
     document.querySelectorAll('[data-theme-set]').forEach(b => (b.onclick = () => this.setTheme(b.dataset.themeSet)));
@@ -100,6 +104,12 @@ const App = {
     const theme = Store.data.settings.theme || 'system';
     if (theme === 'system') delete document.documentElement.dataset.theme;
     else document.documentElement.dataset.theme = theme;
+    // スマホの上部(ステータスバー)の色も、選んだテーマに合わせる
+    const light = '#f5f6f8', dark = '#15171a';
+    document.querySelectorAll('meta[name=theme-color]').forEach(m => {
+      const auto = (m.media || '').includes('dark') ? dark : light;
+      m.content = theme === 'light' ? light : theme === 'dark' ? dark : auto;
+    });
     document.querySelectorAll('[data-theme-set]').forEach(b => b.classList.toggle('on', b.dataset.themeSet === theme));
   },
 
