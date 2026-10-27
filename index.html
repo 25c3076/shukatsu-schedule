@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>就活スケジュール帳</title>
   <link rel="stylesheet" href="css/style.css">
   <script>
@@ -23,10 +23,11 @@
           <div class="brand-sub">進捗と締切をひとつに</div>
         </div>
       </div>
+      <!-- PCでは左のサイドバー、スマホでは画面下のタブバーになる -->
       <nav class="nav">
-        <a href="#dashboard" data-nav="dashboard"><span class="nav-ico">◧</span>ダッシュボード</a>
-        <a href="#companies" data-nav="companies"><span class="nav-ico">▤</span>企業</a>
-        <a href="#tasks" data-nav="tasks"><span class="nav-ico">☑</span>タスク・締切<span class="nav-badge" id="taskBadge" hidden></span></a>
+        <a href="#dashboard" data-nav="dashboard"><span class="nav-ico">◧</span><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span class="nav-label">ダッシュボード</span></a>
+        <a href="#companies" data-nav="companies"><span class="nav-ico">▤</span><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-4h6v4"/><path d="M9 10h.01M15 10h.01M9 13.5h.01M15 13.5h.01"/></svg><span class="nav-label">企業</span></a>
+        <a href="#tasks" data-nav="tasks"><span class="nav-ico">☑</span><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="m8.5 12.5 2.5 2.5 5-5"/><path d="M8 2v4M16 2v4"/></svg><span class="nav-label">タスク・締切</span><span class="nav-badge" id="taskBadge" hidden></span></a>
       </nav>
       <div class="sidebar-foot">
         <div class="foot-row">
@@ -47,6 +48,8 @@
     <main class="main">
       <!-- 右上: メールとカレンダー(タブを増やさないためアイコンだけで置く) -->
       <div class="topbar">
+        <!-- スマホのときだけ表示: アプリ名と設定ボタン -->
+        <a href="#dashboard" class="m-brand"><span class="brand-mark">就</span>就活スケジュール帳</a>
         <a href="#mail" data-nav="mail" class="top-icon" title="メール" aria-label="メール">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
           <span class="top-badge" id="mailBadge" hidden></span>
@@ -54,10 +57,22 @@
         <a href="#calendar" data-nav="calendar" class="top-icon" title="カレンダー" aria-label="カレンダー">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
         </a>
+        <a href="#settings" data-nav="settings" class="top-icon m-settings" title="設定" aria-label="設定">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+        </a>
       </div>
       <div id="banner"></div>
       <div id="view"></div>
     </main>
+  </div>
+
+  <!-- スマホ: 右下の「＋」ボタン(画面ごとの追加ボタンをまとめたもの) -->
+  <div class="fab-backdrop" id="fabBackdrop" hidden></div>
+  <div class="fab-wrap" id="fabWrap" hidden>
+    <div class="fab-menu" id="fabMenu" hidden></div>
+    <button type="button" class="fab" id="fab" aria-label="追加">
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+    </button>
   </div>
 
   <!-- ログイン画面(ログインするまで表示) -->

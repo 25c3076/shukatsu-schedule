@@ -16,15 +16,15 @@ const Tasks = {
     el.innerHTML = `
       <div class="page-head">
         <div><h1>タスク・締切</h1><div class="sub">ES・課題・提出物・面接準備などを期限順に管理</div></div>
-        <div class="actions"><button class="btn primary" data-act="add">＋ タスクを追加</button></div>
+        <div class="actions"><button class="btn primary fab-src" data-act="add" data-fab-label="タスクを追加">＋ タスクを追加</button></div>
       </div>
-      <div class="toolbar">
+      <div class="toolbar"><div class="toolbar-scroll">
         <div class="seg" id="tstatus">
           ${[['open', '未完了'], ['done', '完了'], ['all', 'すべて']].map(([k, l]) => `<button type="button" data-v="${k}" class="${f.status === k ? 'on' : ''}">${l}</button>`).join('')}
         </div>
         <select id="tcompany"><option value="">すべての企業</option><option value="-">(企業なし)</option>${UI.companyOptions(f.company, false)}</select>
         <select id="tprio"><option value="">すべての優先度</option>${Store.PRIORITIES.map(p => `<option ${p === f.priority ? 'selected' : ''}>${p}</option>`).join('')}</select>
-      </div>
+      </div></div>
       <div id="tlist"></div>`;
 
     el.querySelector('#tcompany').value = f.company;

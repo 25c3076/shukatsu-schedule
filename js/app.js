@@ -38,6 +38,40 @@ const App = {
     const navKey = page === 'company' ? 'companies' : (this.routes[page] ? page : 'dashboard');
     document.querySelectorAll('[data-nav]').forEach(a => a.classList.toggle('active', a.dataset.nav === navKey));
     this.updateChrome();
+    this.updateFab();
+  },
+
+  /**
+   * スマホの右下「＋」ボタン
+   * 今の画面の追加ボタン(.fab-src)が1つならそのボタンと同じ動き、2つ以上なら選ぶメニューを出す
+   */
+  updateFab() {
+    const wrap = document.getElementById('fabWrap');
+    const menu = document.getElementById('fabMenu');
+    const fab = document.getElementById('fab');
+    const backdrop = document.getElementById('fabBackdrop');
+    const srcs = [...document.querySelectorAll('#view .fab-src')];
+    // メニューの開け閉め(開いている間は、メニュー以外を薄暗くする)
+    const setOpen = open => {
+      menu.hidden = !open;
+      backdrop.hidden = !open;
+      fab.classList.toggle('open', open);
+    };
+    wrap.hidden = !srcs.length;
+    setOpen(false);
+    backdrop.onclick = () => setOpen(false);
+    if (!srcs.length) return;
+    const label = b => b.dataset.fabLabel || b.textContent.replace('＋', '').trim();
+    fab.setAttribute('aria-label', srcs.length === 1 ? label(srcs[0]) : '追加');
+    menu.innerHTML = srcs.map((b, i) => `<button type="button" class="fab-item" data-i="${i}">＋ ${U.esc(label(b))}</button>`).join('');
+    menu.querySelectorAll('.fab-item').forEach(x => (x.onclick = () => {
+      setOpen(false);
+      srcs[Number(x.dataset.i)].click();
+    }));
+    fab.onclick = () => {
+      if (srcs.length === 1) return srcs[0].click();
+      setOpen(menu.hidden);
+    };
   },
 
   /** ユーザーが入力中・ポップアップ表示中か */

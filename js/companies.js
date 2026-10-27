@@ -8,10 +8,11 @@ const Companies = {
     el.innerHTML = `
       <div class="page-head">
         <div><h1>企業</h1><div class="sub">${Store.data.companies.length}社を管理中</div></div>
-        <div class="actions"><button class="btn primary" data-act="add">＋ 企業を登録</button></div>
+        <div class="actions"><button class="btn primary fab-src" data-act="add" data-fab-label="企業を登録">＋ 企業を登録</button></div>
       </div>
       <div class="toolbar">
         <input type="search" id="cq" placeholder="企業名・業界・職種で検索" value="${U.esc(f.q)}">
+        <div class="toolbar-scroll">
         <div class="seg" id="cstatus">
           ${[['all', 'すべて'], ['active', '選考中'], ['idle', '検討中'], ['offer', '内定'], ['closed', '終了']]
             .map(([k, l]) => `<button type="button" data-v="${k}" class="${f.status === k ? 'on' : ''}">${l}</button>`).join('')}
@@ -22,6 +23,7 @@ const Companies = {
           <option value="name">名前順</option>
           <option value="created">登録順</option>
         </select>
+        </div>
       </div>
       <div id="clist"></div>`;
 

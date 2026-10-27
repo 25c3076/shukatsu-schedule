@@ -28,7 +28,7 @@ const Calendar = {
     el.innerHTML = `
       <div class="page-head">
         <div><h1>カレンダー</h1><div class="sub">タスクの締切と選考の予定を月ごとに表示</div></div>
-        <div class="actions"><button class="btn primary" data-act="add">＋ タスクを追加</button></div>
+        <div class="actions"><button class="btn primary hide-mobile" data-act="add">＋ タスクを追加</button></div>
       </div>
 
       <div class="toolbar cal-toolbar">

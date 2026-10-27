@@ -108,6 +108,7 @@ const Sync = {
       if (sameOwner) {
         if (meta.dirty) await this.push();       // 前回送れなかった変更を送る
         else if (cloud) this.applyRemote(cloud);
+        else if (this.hasContent(Store.data)) await this.push(); // クラウドに文書がない → この端末のデータを送る
       } else {
         const localHas = this.hasContent(Store.data);
         const cloudHas = this.hasContent(cloud);
@@ -124,6 +125,8 @@ const Sync = {
     }
     else if (meta.dirty) this.push(); // オフライン: つながったら送られる
     this.setMeta({ owner: user.uid });
+    // クラウドに文書があるか(「削除された」ことを見分けるために覚えておく)
+    this.cloudExists = snap ? (snap.exists || this.hasContent(Store.data)) : true;
 
     // 他の端末からの変更を受け取る
     this.unsubscribe = this.docRef.onSnapshot(s => this.onRemote(s), err => {
@@ -142,8 +145,11 @@ const Sync = {
 
   onRemote(snap) {
     if (snap.metadata.hasPendingWrites) return; // 自分の送信中のもの
+    const existed = this.cloudExists;
+    this.cloudExists = snap.exists;
     if (!snap.exists) {
-      // ほかの端末で「すべてのデータを削除」された
+      // 文書が「あった → なくなった」ときだけ、ほかの端末で「すべてのデータを削除」されたとみなす
+      if (!existed) return;
       if (this.deletingByMe) { this.deletingByMe = false; return; }
       if (this.hasContent(Store.data)) {
         this.applyRemote(Store.defaults());

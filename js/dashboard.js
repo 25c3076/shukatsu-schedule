@@ -18,8 +18,8 @@ const Dashboard = {
           <div class="sub">${this.today()}</div>
         </div>
         <div class="actions">
-          <button class="btn" data-act="add-task">＋ タスク</button>
-          <button class="btn primary" data-act="add-company">＋ 企業を登録</button>
+          <button class="btn fab-src" data-act="add-task" data-fab-label="タスクを追加">＋ タスク</button>
+          <button class="btn primary fab-src" data-act="add-company" data-fab-label="企業を登録">＋ 企業を登録</button>
         </div>
       </div>
 

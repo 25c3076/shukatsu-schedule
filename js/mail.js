@@ -42,13 +42,13 @@ const Mail = {
     const decided = list.filter(m => m.companyId);
 
     el.innerHTML = head + `
-      <div class="toolbar">
+      <div class="toolbar"><div class="toolbar-scroll">
         <div class="seg" id="mstatus">
           ${[['unchecked', `未確認 ${Store.uncheckedMailCount()}`], ['all', 'すべて']]
             .map(([k, l]) => `<button type="button" data-v="${k}" class="${f.status === k ? 'on' : ''}">${l}</button>`).join('')}
         </div>
         <select id="mcompany" style="width:auto"><option value="">すべての企業</option>${UI.companyOptions(f.company, false)}</select>
-      </div>
+      </div></div>
       ${list.length
         ? `<div class="mail-list">${[...undecided, ...decided].map(m => this.row(m)).join('')}</div>`
         : UI.empty(all.length
