@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>就活スケジュール帳</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    // 画面が一瞬ちらつかないよう、描画前にテーマだけ先に反映する
+    try {
+      var t = JSON.parse(localStorage.getItem('shukatsu-schedule-data')).settings.theme;
+      if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark">就</span>
+        <div>
+          <div class="brand-name">就活スケジュール帳</div>
+          <div class="brand-sub">進捗と締切をひとつに</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="#dashboard" data-nav="dashboard"><span class="nav-ico">◧</span>ダッシュボード</a>
+        <a href="#companies" data-nav="companies"><span class="nav-ico">▤</span>企業</a>
+        <a href="#tasks" data-nav="tasks"><span class="nav-ico">☑</span>タスク・締切<span class="nav-badge" id="taskBadge" hidden></span></a>
+      </nav>
+      <div class="sidebar-foot">
+        <div class="foot-row">
+        <div class="theme-switch" id="themeSwitch" role="group" aria-label="テーマ">
+          <button type="button" data-theme-set="light" title="ライト" aria-label="ライト"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+          <button type="button" data-theme-set="dark" title="ダーク" aria-label="ダーク"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+          <button type="button" data-theme-set="system" title="自動(OSの設定に合わせる)" aria-label="自動"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></button>
+        </div>
+        <a href="#settings" data-nav="settings" class="settings-btn" title="設定・バックアップ">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+          設定
+        </a>
+        </div>
+        <div id="saveStatus"></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <!-- 右上: メールとカレンダー(タブを増やさないためアイコンだけで置く) -->
+      <div class="topbar">
+        <a href="#mail" data-nav="mail" class="top-icon" title="メール" aria-label="メール">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+          <span class="top-badge" id="mailBadge" hidden></span>
+        </a>
+        <a href="#calendar" data-nav="calendar" class="top-icon" title="カレンダー" aria-label="カレンダー">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+        </a>
+      </div>
+      <div id="banner"></div>
+      <div id="view"></div>
+    </main>
+  </div>
+
+  <!-- ログイン画面(ログインするまで表示) -->
+  <div id="authScreen" class="auth-screen" hidden></div>
+
+  <dialog id="modal" class="modal"></dialog>
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+  <input type="file" id="importInput" accept=".json,application/json" hidden>
+
+  <!-- file:// で動かすため ES Modules は使わず、通常の script で順番に読み込む -->
+  <!-- Firebase(ログインとデータの同期)。ES Modulesを使わない compat 版 -->
+  <script src="https://www.gstatic.com/firebasejs/13.1.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/13.1.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+
+  <script src="js/utils.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/gmail.js"></script>
+  <script src="js/sample.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/companies.js"></script>
+  <script src="js/tasks.js"></script>
+  <script src="js/calendar.js"></script>
+  <script src="js/mail.js"></script>
+  <script src="js/sync.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
