@@ -82,7 +82,7 @@ js/app.js         App     画面の切り替え(hash ルーティング)・起�
   stageTemplates: [{ id, name, stages: ["プレエントリー", "説明会", ...] }],
   companies: [{ id, name, industry, aspiration(1-5), url, mypageUrl,
                 jobTypes: [], features, idealCandidate, memo,
-                mailDomains: [],  // 将来のGmail連携用
+                mailDomains: [],  // Gmail連携で送信元を照合するドメイン
                 createdAt }],
   routes:    [{ id, companyId, name: "本選考", result: "進行中|内定|不合格|辞退",
                 stages: [{ id, name, date, done }] }],

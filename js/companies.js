@@ -179,7 +179,7 @@ const Companies = {
               <dt>特色</dt><dd>${U.esc(c.features) || '—'}</dd>
               <dt>求める人材</dt><dd>${U.esc(c.idealCandidate) || '—'}</dd>
               <dt>メモ</dt><dd>${U.esc(c.memo) || '—'}</dd>
-              <dt>メール送信元</dt><dd>${(c.mailDomains || []).map(m => U.esc(m)).join('<br>') || '—'}<div class="future">将来のGmail連携で使用</div></dd>
+              <dt>メール送信元</dt><dd>${(c.mailDomains || []).map(m => U.esc(m)).join('<br>') || '—'}</dd>
             </dl>
           </section>
         </div>
@@ -257,7 +257,7 @@ const Companies = {
         <div class="field full"><label>求める人材</label><textarea name="idealCandidate">${U.esc(c.idealCandidate)}</textarea></div>
         <div class="field full"><label>メモ</label><textarea name="memo">${U.esc(c.memo)}</textarea></div>
         <div class="field full"><label>メールの送信元ドメイン</label><input type="text" name="mailDomains" value="${U.esc((c.mailDomains || []).join(', '))}" placeholder="例: example.co.jp, axol.jp">
-          <div class="help">将来のGmail連携で、この企業からのメールを見分けるのに使います(今は入力だけ)</div></div>
+          <div class="help">Gmail連携で、この企業からのメールを見分けるのに使います。メールアドレスの「@」より後ろを入力します(例: recruit@mail.example.co.jp なら example.co.jp)。複数ある場合はカンマ区切り。</div></div>
         ${isNew ? `<div class="field full"><label>最初の選考ルート</label>
           <select name="template"><option value="">あとで追加する</option>${tplOpts}</select></div>` : ''}
       </div>`,

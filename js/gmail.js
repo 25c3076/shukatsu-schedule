@@ -194,7 +194,11 @@ const Gmail = {
 
   /* ---------- 新着の確認 ---------- */
 
-  async check() {
+  /**
+   * 新着の確認
+   * lookbackDays を渡すと、前回の確認日時に関係なく、過去その日数分を検索し直す(取得済みのメールは除く)
+   */
+  async check(lookbackDays = 0) {
     if (this.checking) return;
     if (!this.isConnected()) { App.refresh(); return; }
     this.checking = true;
@@ -205,7 +209,9 @@ const Gmail = {
       const key = terms.join('|');
       // 初回、または照合の条件が変わったら過去14日分を検索し直す
       const fresh = !this.conf.lastCheckedAt || this.conf.queryKey !== key;
-      const since = fresh
+      const since = lookbackDays
+        ? Date.now() - lookbackDays * 86400000
+        : fresh
         ? Date.now() - this.LOOKBACK_DAYS * 86400000
         : new Date(this.conf.lastCheckedAt).getTime() - this.OVERLAP_DAYS * 86400000;
       const after = Math.floor(since / 1000);
@@ -254,6 +260,7 @@ const Gmail = {
       this.lastError = '';
       Store.save(true);
       if (added) UI.toast(`企業からの新着メールが${added}件あります`);
+      else if (lookbackDays) UI.toast(`過去${lookbackDays}日分を読み込み直しました(新しく見つかったメールはありません)`);
     } catch (e) {
       console.error(e);
       this.lastError = e.message;

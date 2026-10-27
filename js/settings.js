@@ -155,6 +155,17 @@ const Settings = {
         ${st === 'off' || st === 'expired' ? `<button class="btn primary" data-act="gm-connect">${st === 'expired' ? '再接続' : 'Gmailに接続'}</button>` : ''}
         ${st === 'on' || st === 'checking' ? `<button class="btn primary" data-act="gm-check" ${st === 'checking' ? 'disabled' : ''}>今すぐ確認</button><button class="btn" data-act="gm-disconnect">切断</button>` : ''}
       </div>
+      ${st === 'on' || st === 'checking' ? `<div class="field" style="margin-top:14px">
+        <label>過去のメールを読み込み直す</label>
+        <div class="inline" style="align-items:center;flex-wrap:wrap">
+          <select id="gmLookback" style="width:auto">
+            <option value="14">過去14日分</option><option value="30" selected>過去30日分</option>
+            <option value="60">過去60日分</option><option value="90">過去90日分</option>
+          </select>
+          <button class="btn" data-act="gm-rescan" ${st === 'checking' ? 'disabled' : ''}>読み込み直す</button>
+        </div>
+        <div class="help">企業の「メールの送信元」を後から登録したときや、古いメールも拾いたいときに使います。取り込み済みのメールが重複したり、確認済みが戻ったりすることはありません。</div>
+      </div>` : ''}
       <p class="stat-line" style="margin:12px 0 0;font-size:12px">接続は約1時間で切れます。切れたら「再接続」を押してください。開いている間は${g.pollMinutes}分おきに新着を確認します。</p>
     </section>`;
   },
@@ -182,6 +193,7 @@ const Settings = {
     });
     on('[data-act=gm-connect]', () => Gmail.connect());
     on('[data-act=gm-check]', () => Gmail.check());
+    on('[data-act=gm-rescan]', () => Gmail.check(Number(el.querySelector('#gmLookback').value)));
     on('[data-act=gm-disconnect]', () => Gmail.disconnect());
   },
 
